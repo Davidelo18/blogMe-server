@@ -9,14 +9,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Davidelo18/blogMe-graphql.git"
+    "url": "git+https://github.com/Davidelo18/blogMe-server.git"
   },
   "author": "Dawid Kiełbik",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/Davidelo18/blogMe-graphql/issues"
   },
-  "homepage": "https://davidelo18.github.io/blogMe-graphql/",
   "dependencies": {
     "apollo-server": "^2.22.1",
     "bcryptjs": "^2.4.3",
