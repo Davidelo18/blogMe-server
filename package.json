@@ -1,0 +1,32 @@
+{
+  "name": "blogme",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "serve": "node index",
+    "start": "nodemon index"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Davidelo18/blogMe-graphql.git"
+  },
+  "author": "Dawid Kiełbik",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Davidelo18/blogMe-graphql/issues"
+  },
+  "homepage": "https://davidelo18.github.io/blogMe-graphql/",
+  "dependencies": {
+    "apollo-server": "^2.22.1",
+    "bcryptjs": "^2.4.3",
+    "graphql": "^15.5.0",
+    "jsonwebtoken": "^8.5.1",
+    "moment": "^2.29.1",
+    "mongoose": "^5.12.2",
+    "node-sass": "^5.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  }
+}
