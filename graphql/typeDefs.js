@@ -24,6 +24,13 @@ module.exports = gql`
         plussedAt: String!
         username: String!
     }
+    type Message {
+        id: ID!
+        body: String!
+        sendFrom: String!
+        sendTo: String!
+        sendingTime: String!
+    }
     type User {
         id: ID!
         username: String!
@@ -43,6 +50,7 @@ module.exports = gql`
         getOnePost(postId: ID!): Post
         getComments(postId: ID!): [Comment]
         getReplies(commentId: ID!): [Comment]
+        getMessages(messagesFrom: String!): [Message]
     }
     type Mutation {
         register(registerInput: RegisterInput): User!
@@ -56,5 +64,6 @@ module.exports = gql`
         plusComment(commentId: ID!): Comment!
         minusComment(commentId: ID!): Comment!
         postReplyToComment(commentId: ID!, body: String!): Comment!
+        sendMessage(body: String!, sendTo: String!): Message!
     }
 `
