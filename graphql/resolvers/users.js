@@ -71,7 +71,7 @@ module.exports = {
             }
 
             // sprawdzenie czy nazwa jest już zajęta
-            const user = await User.findOne({ username  });
+            const user = await User.findOne({ username });
 
             if (user) {
                 throw new UserInputError('Ta nazwa jest zajęta.', {
