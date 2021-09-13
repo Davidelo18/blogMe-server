@@ -16,6 +16,15 @@ function generateToken(user) {
 
 module.exports = {
     Query: {
+        async getUsers(parent, vars, context) {
+            const userAuth = auth(context);
+            try {
+                const users = await User.find();
+                return users;
+            } catch (err) {
+                throw new Error(err);
+            }
+        },
         async getUserInfo(parent, { username }, context) {
             const userAuth = auth(context);
 
@@ -81,6 +90,16 @@ module.exports = {
                 });
             }
 
+            const emailCheck = await User.findOne({ email });
+
+            if (emailCheck) {
+                throw new UserInputError('Ten email jest już przypisany do innego konta.', {
+                    errors: {
+                        email: 'Ten email jest już przypisany do innego konta.'
+                    }
+                });
+            }
+
             // hashowanie hasła
             password = await bcrypt.hash(password, 12);
 
@@ -88,7 +107,21 @@ module.exports = {
                 email,
                 username,
                 password,
-                timeCreated: new Date().toISOString()
+                timeCreated: new Date().toISOString(),
+                info: {
+                    name: '',
+                    surname: '',
+                    birthDate: '',
+                    aboutMe: '',
+                    facebook: '',
+                    instagram: '',
+                    youtube: '',
+                    website: ''
+                },
+                options: {
+                    nightTheme: false,
+                    canReceiveMessages: true
+                }
             });
 
             const result = await newUser.save();
@@ -100,6 +133,10 @@ module.exports = {
                 id: result._id,
                 token
             };
+        },
+
+        async setUserInfo(parent, { name, surname, birthDate, aboutMe, facebook, instagram, youtube, website }, context) {
+            const user = auth(context);
         }
     }
 }
