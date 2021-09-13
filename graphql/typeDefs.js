@@ -37,6 +37,22 @@ module.exports = gql`
         email: String!
         token: String!
         timeCreated: String!
+        info: [Info]!
+        options: [Options]!
+    }
+    type Info {
+        name: String
+        surname: String
+        birthDate: String
+        aboutMe: String
+        facebook: String
+        instagram: String
+        youtube: String
+        website: String
+    }
+    type Options {
+        nightTheme: Boolean!
+        canReceiveMessages: Boolean!
     }
     input RegisterInput {
         username: String!
@@ -45,6 +61,7 @@ module.exports = gql`
         confirmPassword: String!
     }
     type Query {
+        getUsers: [User]
         getUserInfo(username: String!): User
         getPosts: [Post]
         getOnePost(postId: ID!): Post
@@ -65,5 +82,6 @@ module.exports = gql`
         minusComment(commentId: ID!): Comment!
         postReplyToComment(commentId: ID!, body: String!): Comment!
         sendMessage(body: String!, sendTo: String!): Message!
+        setUserInfo(name: String, surname: String, birthDate: String, aboutMe: String, facebook: String, instagram: String, youtube: String, website: String): User
     }
 `
