@@ -3,6 +3,26 @@ const auth = require('../../core/auth');
 const User = require('../../models/User');
 const { UserInputError } = require('apollo-server-errors');
 
+let userInfo = {
+    username: null,
+    email: null,
+    avatar: null,
+    info: null,
+    options: null
+}
+
+function setUserObject(user) {
+    userInfo = {
+        username: user.username,
+        email: user.email,
+        avatar: user.avatar,
+        info: user.info,
+        options: user.options
+    }
+
+    return userInfo;
+}
+
 module.exports = {
     Query: {
         async getMessages(parent, { messagesFrom }, context) {
@@ -39,6 +59,11 @@ module.exports = {
                 throw new UserInputError('Nie znaleziono użytkownika o takiej nazwie');
             } else if (recipient.username === user.username) {
                 throw new UserInputError('Nie możesz pisać sam/a do siebie :)');
+            }
+
+            setUserObject(recipient);
+            if (!userInfo.options.canReceiveMessages) {
+                throw new UserInputError('Nie możesz wysyłać prywatnych wiadomości do tego użytkownika');
             }
 
             if (body.trim() === '') {

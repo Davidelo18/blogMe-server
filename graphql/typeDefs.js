@@ -37,8 +37,9 @@ module.exports = gql`
         email: String!
         token: String!
         timeCreated: String!
-        info: [Info]!
-        options: [Options]!
+        avatar: String!
+        info: Info!
+        options: Options!
     }
     type Info {
         name: String
@@ -82,6 +83,8 @@ module.exports = gql`
         minusComment(commentId: ID!): Comment!
         postReplyToComment(commentId: ID!, body: String!): Comment!
         sendMessage(body: String!, sendTo: String!): Message!
-        setUserInfo(name: String, surname: String, birthDate: String, aboutMe: String, facebook: String, instagram: String, youtube: String, website: String): User
+        setAvatar(photoUrl: String!): User!
+        setUserInfo(name: String, surname: String, birthDate: String, aboutMe: String, facebook: String, instagram: String, youtube: String, website: String): User!
+        setUserOptions(nightTheme: Boolean, canReceiveMessages: Boolean): User!
     }
 `
