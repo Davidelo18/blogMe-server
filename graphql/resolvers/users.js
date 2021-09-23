@@ -119,7 +119,8 @@ module.exports = {
             return {
                 ...user._doc,
                 id: user._id,
-                token
+                token,
+                options: userInfo.options
             }
         },
 
