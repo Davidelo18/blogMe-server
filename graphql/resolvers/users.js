@@ -213,14 +213,14 @@ module.exports = {
         async setUserInfo(parent, { name, surname, birthDate, aboutMe, facebook, instagram, youtube, website }, context) {
             const user = auth(context);
 
-            if (name) await User.updateOne({ username: user.username }, { $set: { "info.name": name } });
-            if (surname) await User.updateOne({ username: user.username }, { $set: { "info.surname": surname } });
-            if (birthDate) await User.updateOne({ username: user.username }, { $set: { "info.birthDate": birthDate } });
-            if (aboutMe) await User.updateOne({ username: user.username }, { $set: { "info.aboutMe": aboutMe } });
-            if (facebook) await User.updateOne({ username: user.username }, { $set: { "info.facebook": facebook } });
-            if (instagram) await User.updateOne({ username: user.username }, { $set: { "info.instagram": instagram } });
-            if (youtube) await User.updateOne({ username: user.username }, { $set: { "info.youtube": youtube } });
-            if (website) await User.updateOne({ username: user.username }, { $set: { "info.website": website } });
+            if (name !== null) await User.updateOne({ username: user.username }, { $set: { "info.name": name } });
+            if (surname !== null) await User.updateOne({ username: user.username }, { $set: { "info.surname": surname } });
+            if (birthDate !== null) await User.updateOne({ username: user.username }, { $set: { "info.birthDate": birthDate } });
+            if (aboutMe !== null) await User.updateOne({ username: user.username }, { $set: { "info.aboutMe": aboutMe } });
+            if (facebook !== null) await User.updateOne({ username: user.username }, { $set: { "info.facebook": facebook } });
+            if (instagram !== null) await User.updateOne({ username: user.username }, { $set: { "info.instagram": instagram } });
+            if (youtube !== null) await User.updateOne({ username: user.username }, { $set: { "info.youtube": youtube } });
+            if (website !== null) await User.updateOne({ username: user.username }, { $set: { "info.website": website } });
 
             const currentUser = await User.findOne({ username: user.username });
             setUserObject(currentUser);
