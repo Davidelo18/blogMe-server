@@ -231,8 +231,8 @@ module.exports = {
         async setUserOptions(parent, { nightTheme, canReceiveMessages }, context) {
             const user = auth(context);
 
-            if (nightTheme) await User.updateOne({ username: user.username }, { $set: { "options.nightTheme": nightTheme } });
-            if (canReceiveMessages) await User.updateOne({ username: user.username }, { $set: { "options.canReceiveMessages": canReceiveMessages } });
+            if (nightTheme !== null) await User.updateOne({ username: user.username }, { $set: { "options.nightTheme": nightTheme } });
+            if (canReceiveMessages !== null) await User.updateOne({ username: user.username }, { $set: { "options.canReceiveMessages": canReceiveMessages } });
 
             const currentUser = await User.findOne({ username: user.username });
             setUserObject(currentUser);
