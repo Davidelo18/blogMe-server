@@ -1,7 +1,7 @@
 const Message = require('../../models/Message');
-const auth = require('../../core/auth');
 const User = require('../../models/User');
-const { UserInputError } = require('apollo-server-errors');
+const { UserInputError, AuthenticationError } = require('apollo-server-errors');
+const { withFilter } = require('apollo-server');
 
 let userInfo = {
     username: null,
@@ -25,8 +25,8 @@ function setUserObject(user) {
 
 module.exports = {
     Query: {
-        async getMessages(parent, { messagesFrom }, context) {
-            const user = auth(context);
+        async getMessages(parent, { messagesFrom }, { user }) {
+            if (!user) throw new AuthenticationError('Dostęp zabroniony.');
 
             try {
                 const recipient = await User.findOne({ username: messagesFrom });
@@ -51,8 +51,8 @@ module.exports = {
         }
     },
     Mutation: {
-        async sendMessage (parent, { body, sendTo }, context) {
-            const user = auth(context);
+        async sendMessage (parent, { body, sendTo }, { user, pubsub }) {
+            if (!user) throw new AuthenticationError('Dostęp zabroniony.');
             const recipient = await User.findOne({ username: sendTo });
 
             if (!recipient) {
@@ -81,7 +81,23 @@ module.exports = {
                 sendingTime: new Date().toISOString()
             });
 
+            pubsub.publish('NEW_MESSAGE', { newMessage: message });
+
             return message;
+        }
+    },
+    Subscription: {
+        newMessage: {
+            subscribe: withFilter((parent, vars, { user, pubsub }) => {
+                if (!user) throw new AuthenticationError('Dostęp zabroniony');
+                return pubsub.asyncIterator(['NEW_MESSAGE']);
+            }, ({ newMessage }, args, { user }) => {
+                if (newMessage.sendFrom === user.username || newMessage.sendTo === user.username) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }),
         }
     }
 }

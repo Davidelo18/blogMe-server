@@ -1,8 +1,7 @@
 const User = require('../../models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const auth = require('../../core/auth');
-const { UserInputError } = require('apollo-server');
+const { UserInputError, AuthenticationError } = require('apollo-server');
 const { SECRET_KEY } = require('../../config');
 const { validateRegisterInput, validateLoginInput } = require('../../core/validators');
 const validUrl = require('valid-url');
@@ -67,8 +66,8 @@ function testImage(url, timeout) {
 
 module.exports = {
     Query: {
-        async getUsers(parent, vars, context) {
-            const userAuth = auth(context);
+        async getUsers(parent, vars, { user }) {
+            if (!user) throw new AuthenticationError('Dostęp zabroniony.');
             try {
                 const users = await User.find();
                 return users;
@@ -76,8 +75,8 @@ module.exports = {
                 throw new Error(err);
             }
         },
-        async getUserInfo(parent, { username }, context) {
-            const userAuth = auth(context);
+        async getUserInfo(parent, { username }, { user }) {
+            if (!user) throw new AuthenticationError('Dostęp zabroniony.');
 
             try {
                 const user = await User.findOne({ username });
@@ -189,8 +188,8 @@ module.exports = {
             };
         },
 
-        async setAvatar(parent, { photoUrl }, context) {
-            const user = auth(context);
+        async setAvatar(parent, { photoUrl }, { user }) {
+            if (!user) throw new AuthenticationError('Dostęp zabroniony.');
 
             if (!validUrl.isUri(photoUrl)) {
                 throw new Error('Niepoprawny link');
@@ -210,8 +209,8 @@ module.exports = {
             return User.findOne({ username: user.username });
         },
 
-        async setUserInfo(parent, { name, surname, birthDate, aboutMe, facebook, instagram, youtube, website }, context) {
-            const user = auth(context);
+        async setUserInfo(parent, { name, surname, birthDate, aboutMe, facebook, instagram, youtube, website }, { user }) {
+            if (!user) throw new AuthenticationError('Dostęp zabroniony.');
 
             if (name !== null) await User.updateOne({ username: user.username }, { $set: { "info.name": name } });
             if (surname !== null) await User.updateOne({ username: user.username }, { $set: { "info.surname": surname } });

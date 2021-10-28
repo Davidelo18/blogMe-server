@@ -1,6 +1,5 @@
 const Comment = require('../../models/Comment');
 const Post = require('../../models/Post');
-const auth = require('../../core/auth');
 const { AuthenticationError, UserInputError } = require('apollo-server');
 
 module.exports = {
@@ -24,8 +23,8 @@ module.exports = {
         },
     },
     Mutation: {
-        async createComment(parent, { postId, body }, context) {
-            const user = auth(context);
+        async createComment(parent, { postId, body }, { user }) {
+            if (!user) throw new AuthenticationError('Dostęp zabroniony.');
 
             if (body.trim() === '') {
                 throw new UserInputError('Pusty komentarz', {
@@ -57,8 +56,8 @@ module.exports = {
             }
         },
 
-        async deleteComment(parent, { commentId }, context) {
-            const user = auth(context);
+        async deleteComment(parent, { commentId }, { user }) {
+            if (!user) throw new AuthenticationError('Dostęp zabroniony.');
 
             try {
                 const comment = await Comment.findById(commentId);
@@ -74,8 +73,8 @@ module.exports = {
             }
         },
 
-        async plusComment(parent, { commentId }, context) {
-            const { username } = auth(context);
+        async plusComment(parent, { commentId }, { user }) {
+            if (!user) throw new AuthenticationError('Dostęp zabroniony.');
 
             const comment = await Comment.findById(commentId);
             if (comment) {
@@ -100,8 +99,8 @@ module.exports = {
             }
         },
 
-        async minusComment(parent, { commentId }, context) {
-            const { username } = auth(context);
+        async minusComment(parent, { commentId }, { user }) {
+            if (!user) throw new AuthenticationError('Dostęp zabroniony.');
 
             const comment = await Comment.findById(commentId);
             if (comment) {
@@ -126,8 +125,8 @@ module.exports = {
             }
         },
 
-        async postReplyToComment(parent, { commentId, body }, context) {
-            const user = auth(context);
+        async postReplyToComment(parent, { commentId, body }, { user }) {
+            if (!user) throw new AuthenticationError('Dostęp zabroniony.');
 
             if (body.trim() === '') {
                 throw new UserInputError('Pusty komentarz', {

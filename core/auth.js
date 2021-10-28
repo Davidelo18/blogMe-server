@@ -1,24 +1,25 @@
 const jwt = require('jsonwebtoken');
 const { SECRET_KEY } = require('../config');
-const { AuthenticationError } = require('apollo-server');
+const { PubSub } = require('apollo-server');
+
+const pubsub = new PubSub();
 
 module.exports = (context) => {
-    const authHeader = context.req.headers.authorization;
+    let token;
 
-    if (authHeader) {
-        const token = authHeader.split('Token ')[1];
-
-        if (token) {
-            try {
-                const user = jwt.verify(token, SECRET_KEY);
-                return user;
-            } catch (err) {
-                throw new AuthenticationError('Niepoprawny lub wygaśnięty token');
-            }
-        }
-
-        throw new Error('Token powinien być w postaci \'Token [token]' );
+    if (context.req && context.req.headers.authorization) {
+        token = context.req.headers.authorization.split('Token ')[1];
+    } else if (context.connection && context.connection.context.Authorization) {
+        token = context.connection.context.Authorization.split('Token ')[1];
     }
 
-    throw new Error('Brak tokenu');
+    if (token) {
+        jwt.verify(token, SECRET_KEY, (err, decodedToken) => {
+            context.user = decodedToken;
+        });
+    }
+
+    context.pubsub = pubsub;
+
+    return context;
 }

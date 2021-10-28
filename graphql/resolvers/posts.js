@@ -32,8 +32,8 @@ module.exports = {
         }
     },
     Mutation: {
-        async createPost(parent, { body }, context) {
-            const user = auth(context);
+        async createPost(parent, { body }, { user }) {
+            if (!user) throw new AuthenticationError('Dostęp zabroniony.');
 
             if (body.trim() === '') {
                 throw new UserInputError('Pusty post', {
@@ -55,8 +55,8 @@ module.exports = {
             return post;
         },
 
-        async deletePost(parent, { postId }, context) {
-            const user = auth(context);
+        async deletePost(parent, { postId }, { user }) {
+            if (!user) throw new AuthenticationError('Dostęp zabroniony.');
 
             try {
                 const post = await Post.findById(postId);
@@ -72,8 +72,8 @@ module.exports = {
             }
         },
 
-        async plusPost(parent, { postId }, context) {
-            const { username } = auth(context);
+        async plusPost(parent, { postId }, { user }) {
+            if (!user) throw new AuthenticationError('Dostęp zabroniony.');
 
             const post = await Post.findById(postId);
             if (post) {
@@ -98,8 +98,8 @@ module.exports = {
             }
         },
 
-        async minusPost(parent, { postId }, context) {
-            const { username } = auth(context);
+        async minusPost(parent, { postId }, { user }) {
+            if (!user) throw new AuthenticationError('Dostęp zabroniony.');
 
             const post = await Post.findById(postId);
             if (post) {

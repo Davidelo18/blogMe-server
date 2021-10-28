@@ -87,4 +87,7 @@ module.exports = gql`
         setUserInfo(name: String, surname: String, birthDate: String, aboutMe: String, facebook: String, instagram: String, youtube: String, website: String): User!
         setUserOptions(nightTheme: Boolean, canReceiveMessages: Boolean): User!
     }
+    type Subscription {
+        newMessage: Message!
+    }
 `
