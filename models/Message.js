@@ -8,7 +8,8 @@ const messageSchema = new Schema({
     user: {
         type: Schema.Types.ObjectId,
         ref: 'users'
-    }
+    },
+    isRead: Boolean
 });
 
 module.exports = model('Message', messageSchema);

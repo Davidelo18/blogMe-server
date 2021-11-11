@@ -30,6 +30,7 @@ module.exports = gql`
         sendFrom: String!
         sendTo: String!
         sendingTime: String!
+        isRead: Boolean!
     }
     type User {
         id: ID!
@@ -89,5 +90,6 @@ module.exports = gql`
     }
     type Subscription {
         newMessage: Message!
+        readMessage: Message!
     }
 `

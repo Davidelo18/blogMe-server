@@ -42,6 +42,10 @@ module.exports = {
                         { sendFrom: usernames[0], sendTo: usernames[1] },
                         { sendFrom: usernames[1], sendTo: usernames[0] },
                     ]
+                });
+
+                messages.forEach(msg => {
+                    msg.isRead = true;
                 })
 
                 return messages;
@@ -78,7 +82,8 @@ module.exports = {
                 sendFrom: user.username,
                 sendTo,
                 body,
-                sendingTime: new Date().toISOString()
+                sendingTime: new Date().toISOString(),
+                isRead: false
             });
 
             pubsub.publish('NEW_MESSAGE', { newMessage: message });
