@@ -43,6 +43,14 @@ module.exports = {
                 });
             }
 
+            if (body.length < 300) {
+                throw new UserInputError('Zbyt krótki post', {
+                    errors: {
+                        body: "Post musi mieć minimum 300 znaków"
+                    }
+                });
+            }
+
             const newPost = new Post({
                 body,
                 user: user.id,

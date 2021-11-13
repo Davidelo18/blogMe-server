@@ -46,7 +46,7 @@ module.exports = {
 
                 messages.forEach(msg => {
                     msg.isRead = true;
-                })
+                });
 
                 return messages;
             } catch(err) {

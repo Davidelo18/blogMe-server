@@ -142,12 +142,31 @@ module.exports = {
                 });
             }
 
+            const usernameLength = username.length;
+
+            if (usernameLength < 5 || usernameLength > 16) {
+                throw new UserInputError('Nazwa musi mieć od 5 do 16 znaków.', {
+                    errors: {
+                        username: 'Nazwa musi mieć od 5 do 16 znaków.'
+                    }
+                });
+            }
+
             const emailCheck = await User.findOne({ email });
 
             if (emailCheck) {
                 throw new UserInputError('Ten email jest już przypisany do innego konta.', {
                     errors: {
                         email: 'Ten email jest już przypisany do innego konta.'
+                    }
+                });
+            }
+
+            const passwordLength = password.length;
+            if (passwordLength < 5 || passwordLength > 20) {
+                throw new UserInputError('Hasło musi mieć od 5 do 20 znaków.', {
+                    errors: {
+                        username: 'Hasło musi mieć od 5 do 20 znaków.'
                     }
                 });
             }

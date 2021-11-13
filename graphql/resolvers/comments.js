@@ -34,6 +34,14 @@ module.exports = {
                 })
             }
 
+            if (body.length < 50) {
+                throw new UserInputError('Krótki komentarz', {
+                    errors: {
+                        body: "Komentarz musi mieć minimum 50 znaków"
+                    }
+                })
+            }
+
             try {
                 const post = await Post.findById(postId);
                 if (post) {
