@@ -37,33 +37,6 @@ function setUserObject(user) {
     return userInfo;
 }
 
-function testImage(url, timeout) {
-    timeout = timeout || 5000;
-    var timedOut = false, timer;
-    var img = new Image();
-    let ok = false;
-    img.onerror = img.onabort = function() {
-        console.log('NOT OK');
-        if (!timedOut) {
-            clearTimeout(timer);
-            ok = true;
-        }
-    };
-    img.onload = function() {
-        if (!timedOut) {
-            clearTimeout(timer);
-            ok = false;
-        }
-    };
-    img.src = url;
-    timer = setTimeout(function() {
-        timedOut = true;
-        img.src = "//!!!!/test.jpg";
-        if (ok) return true;
-        else return false;
-    }, timeout);
-}
-
 module.exports = {
     Query: {
         async getUsers(parent, vars, { user }) {
@@ -91,7 +64,7 @@ module.exports = {
         }
     },
     Mutation: {
-        async login (parent, { username, password }) {
+        async login(parent, { username, password }) {
 
             // walidacja inputów
             const { valid, errors } = validateLoginInput(username, password);
@@ -123,7 +96,7 @@ module.exports = {
             }
         },
 
-        async register (parent, { registerInput: { username, email, password, confirmPassword } }) {
+        async register(parent, { registerInput: { username, email, password, confirmPassword } }) {
 
             // walidacja inputów
             const { valid, errors } = validateRegisterInput(username, email, password, confirmPassword);
@@ -211,13 +184,10 @@ module.exports = {
             if (!user) throw new AuthenticationError('Dostęp zabroniony.');
 
             if (!validUrl.isUri(photoUrl)) {
-                throw new Error('Niepoprawny link');
+                throw new UserInputError('Niepoprawny link');
             }
 
             var image = new Image();
-            image.onerror = function() {
-                throw new Error('Niepoprawny obraz');
-            }
             image.src = photoUrl;
 
             await User.updateOne({ username: user.username }, { $set: { avatar: photoUrl } });

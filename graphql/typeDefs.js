@@ -69,6 +69,7 @@ module.exports = gql`
         getOnePost(postId: ID!): Post
         getComments(postId: ID!): [Comment]
         getReplies(commentId: ID!): [Comment]
+        checkUnreadMessages: [Message]
         getMessages(messagesFrom: String!): [Message]
     }
     type Mutation {

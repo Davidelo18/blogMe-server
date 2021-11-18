@@ -43,7 +43,7 @@ module.exports = {
                 });
             }
 
-            if (body.length < 300) {
+            if (body.replace(/\s/g, '').length < 300) {
                 throw new UserInputError('Zbyt krótki post', {
                     errors: {
                         body: "Post musi mieć minimum 300 znaków"

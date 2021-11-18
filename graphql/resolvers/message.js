@@ -25,6 +25,22 @@ function setUserObject(user) {
 
 module.exports = {
     Query: {
+        async checkUnreadMessages(parent, vars, { user }) {
+            if (!user) throw new AuthenticationError('Dostęp zabroniony.');
+
+            try {
+                const unreadMessages = await Message.find({
+                    $and: [
+                        { sendTo: user.username },
+                        { isRead: false }
+                    ]
+                });
+
+                return unreadMessages;
+            } catch(err) {
+                throw new Error(err);
+            }
+        },
         async getMessages(parent, { messagesFrom }, { user }) {
             if (!user) throw new AuthenticationError('Dostęp zabroniony.');
 
@@ -44,9 +60,12 @@ module.exports = {
                     ]
                 });
 
-                messages.forEach(msg => {
-                    msg.isRead = true;
-                });
+                await Message.updateMany({
+                    $or: [
+                        { sendFrom: usernames[0], sendTo: usernames[1] },
+                        { sendFrom: usernames[1], sendTo: usernames[0] },
+                    ]
+                }, { $set: { isRead: true } });
 
                 return messages;
             } catch(err) {
@@ -97,7 +116,7 @@ module.exports = {
                 if (!user) throw new AuthenticationError('Dostęp zabroniony');
                 return pubsub.asyncIterator(['NEW_MESSAGE']);
             }, ({ newMessage }, args, { user }) => {
-                if (newMessage.sendFrom === user.username || newMessage.sendTo === user.username) {
+                if (newMessage.sendFrom === user.username) {
                     return true;
                 } else {
                     return false;
