@@ -61,10 +61,7 @@ module.exports = {
                 });
 
                 await Message.updateMany({
-                    $or: [
-                        { sendFrom: usernames[0], sendTo: usernames[1] },
-                        { sendFrom: usernames[1], sendTo: usernames[0] },
-                    ]
+                    sendFrom: usernames[1], sendTo: usernames[0]
                 }, { $set: { isRead: true } });
 
                 return messages;
