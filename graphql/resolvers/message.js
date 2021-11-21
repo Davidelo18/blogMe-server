@@ -113,7 +113,7 @@ module.exports = {
                 if (!user) throw new AuthenticationError('Dostęp zabroniony');
                 return pubsub.asyncIterator(['NEW_MESSAGE']);
             }, ({ newMessage }, args, { user }) => {
-                if (newMessage.sendFrom === user.username) {
+                if (newMessage.sendTo === user.username) {
                     return true;
                 } else {
                     return false;
