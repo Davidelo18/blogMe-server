@@ -34,7 +34,7 @@ module.exports = {
                 })
             }
 
-            if (body.length < 50) {
+            if (body.trim().length < 50) {
                 throw new UserInputError('Krótki komentarz', {
                     errors: {
                         body: "Komentarz musi mieć minimum 50 znaków"
@@ -140,6 +140,14 @@ module.exports = {
                 throw new UserInputError('Pusty komentarz', {
                     errors: {
                         body: "Komentarz nie może być pusty"
+                    }
+                })
+            }
+
+            if (body.trim().length < 50) {
+                throw new UserInputError('Krótki komentarz', {
+                    errors: {
+                        body: "Komentarz musi mieć minimum 50 znaków"
                     }
                 })
             }
