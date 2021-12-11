@@ -86,15 +86,15 @@ module.exports = {
             const post = await Post.findById(postId);
             if (post) {
                 // sprawdzanie czy użytkownik/czka nie dał/a juz minusa
-                if (post.minusses.find(minus => minus.username === username)) {
-                    post.minusses = post.minusses.filter(minus => minus.username !== username);
+                if (post.minusses.find(minus => minus.username === user.username)) {
+                    post.minusses = post.minusses.filter(minus => minus.username !== user.username);
                 }
 
-                if (post.plusses.find(plus => plus.username === username)) { // cofanie plusa
-                    post.plusses = post.plusses.filter(plus => plus.username !== username);
+                if (post.plusses.find(plus => plus.username === user.username)) { // cofanie plusa
+                    post.plusses = post.plusses.filter(plus => plus.username !== user.username);
                 } else { // plusowanie
                     post.plusses.push({
-                        username,
+                        username: user.username,
                         plussedAt: new Date().toISOString()
                     })
                 }
@@ -112,15 +112,15 @@ module.exports = {
             const post = await Post.findById(postId);
             if (post) {
                 // sprawdzanie czy użytkownik/czka nie dał/a juz plusa
-                if (post.plusses.find(plus => plus.username === username)) {
-                    post.plusses = post.plusses.filter(plus => plus.username !== username);
+                if (post.plusses.find(plus => plus.username === user.username)) {
+                    post.plusses = post.plusses.filter(plus => plus.username !== user.username);
                 }
 
-                if (post.minusses.find(minus => minus.username === username)) { // cofanie plusa
-                    post.minusses = post.minusses.filter(minus => minus.username !== username);
+                if (post.minusses.find(minus => minus.username === user.username)) { // cofanie plusa
+                    post.minusses = post.minusses.filter(minus => minus.username !== user.username);
                 } else { // plusowanie
                     post.minusses.push({
-                        username,
+                        username: user.username,
                         minussedAt: new Date().toISOString()
                     })
                 }
