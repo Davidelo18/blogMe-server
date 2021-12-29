@@ -42,7 +42,7 @@ module.exports = {
                 })
             }
 
-            const sameComment = await Post.findOne({
+            const sameComment = await Comment.findOne({
                 $and: [
                        {body},
                        {referTo: postId}
