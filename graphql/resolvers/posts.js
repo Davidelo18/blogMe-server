@@ -51,6 +51,15 @@ module.exports = {
                 });
             }
 
+            const samePost = await Post.findOne({body});
+            if (samePost) {
+                throw new UserInputError('Już istnieje taki post ;)', {
+                    errors: {
+                        body: "Już istnieje taki post ;)"
+                    }
+                });
+            }
+
             const newPost = new Post({
                 body,
                 user: user.id,

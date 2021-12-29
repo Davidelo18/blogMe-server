@@ -42,6 +42,20 @@ module.exports = {
                 })
             }
 
+            const sameComment = await Post.findOne({
+                $and: [
+                       {body},
+                       {referTo: postId}
+                    ]
+            });
+            if (sameComment) {
+                throw new UserInputError('Już istnieje taki komentarz ;)', {
+                    errors: {
+                        body: "Już istnieje taki komentarz ;)"
+                    }
+                });
+            }
+
             try {
                 const post = await Post.findById(postId);
                 if (post) {
