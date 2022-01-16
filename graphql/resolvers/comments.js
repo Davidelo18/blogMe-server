@@ -34,10 +34,10 @@ module.exports = {
                 })
             }
 
-            if (body.trim().length < 50) {
+            if (body.trim().length < 200) {
                 throw new UserInputError('Krótki komentarz', {
                     errors: {
-                        body: "Komentarz musi mieć minimum 50 znaków"
+                        body: "Komentarz musi mieć minimum 200 znaków"
                     }
                 })
             }
