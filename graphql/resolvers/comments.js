@@ -101,15 +101,15 @@ module.exports = {
             const comment = await Comment.findById(commentId);
             if (comment) {
                 // sprawdzanie czy użytkownik/czka nie dał/a juz minusa
-                if (comment.minusses.find(minus => minus.username === username)) {
-                    comment.minusses = comment.minusses.filter(minus => minus.username !== username);
+                if (comment.minusses.find(minus => minus.username === user.username)) {
+                    comment.minusses = comment.minusses.filter(minus => minus.username !== user.username);
                 }
 
-                if (comment.plusses.find(plus => plus.username === username)) { // cofanie plusa
-                    comment.plusses = comment.plusses.filter(plus => plus.username !== username);
+                if (comment.plusses.find(plus => plus.username === user.username)) { // cofanie plusa
+                    comment.plusses = comment.plusses.filter(plus => plus.username !== user.username);
                 } else { // plusowanie
                     comment.plusses.push({
-                        username,
+                        username: user.username,
                         plussedAt: new Date().toISOString()
                     })
                 }
@@ -127,15 +127,15 @@ module.exports = {
             const comment = await Comment.findById(commentId);
             if (comment) {
                 // sprawdzanie czy użytkownik/czka nie dał/a juz plusa
-                if (comment.plusses.find(plus => plus.username === username)) {
-                    comment.plusses = comment.plusses.filter(plus => plus.username !== username);
+                if (comment.plusses.find(plus => plus.username === user.username)) {
+                    comment.plusses = comment.plusses.filter(plus => plus.username !== user.username);
                 }
 
-                if (comment.minusses.find(minus => minus.username === username)) { // cofanie minusa
-                    comment.minusses = comment.minusses.filter(minus => minus.username !== username);
+                if (comment.minusses.find(minus => minus.username === user.username)) { // cofanie minusa
+                    comment.minusses = comment.minusses.filter(minus => minus.username !== user.username);
                 } else { // minusowanie
                     comment.minusses.push({
-                        username,
+                        username: user.username,
                         minussedAt: new Date().toISOString()
                     })
                 }
