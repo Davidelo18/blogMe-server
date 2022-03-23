@@ -24,7 +24,7 @@
     "jsonwebtoken": "^8.5.1",
     "moment": "^2.29.1",
     "mongoose": "^5.12.2",
-    "node-sass": "^5.0.0",
+    "node-sass": "^7.0.1",
     "valid-url": "^1.0.9"
   },
   "devDependencies": {
